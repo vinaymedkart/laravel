@@ -71,7 +71,6 @@ class UserController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Login successful',
-                'user' => $user,
                 'token' => $token,
                 'token_type' => 'Bearer'
             ]);
@@ -90,12 +89,11 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Logout user
-     */
+    
     public function logout(Request $request)
     {
         try {
+            // Delete only the current access token
             $request->user()->currentAccessToken()->delete();
 
             return response()->json([
@@ -111,9 +109,8 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Get authenticated user details
-     */
+
+    
     public function me(Request $request)
     {
         try {
