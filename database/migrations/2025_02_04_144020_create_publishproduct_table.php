@@ -6,8 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up() {
-        Schema::create('draft_products', function (Blueprint $table) {
+        Schema::create('publish_products', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('ws_code')->unique();
             $table->string('name');
             $table->float('sales_price');
             $table->float('mrp');
@@ -17,17 +18,11 @@ return new class extends Migration {
             $table->boolean('is_discontinued')->default(false);
             $table->boolean('is_assured')->default(false);
             $table->boolean('is_refridged')->default(false);
-            $table->enum('product_status', ['Draft', 'Published', 'Unpublished'])->default('Draft');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('ws_code')->nullable();
             $table->json('combination'); // Stores array of molecule names
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
-            $table->unsignedBigInteger('published_by')->nullable();
-            $table->timestamp('published_at')->nullable();
-            $table->unsignedBigInteger('unpublished_by')->nullable();
-            $table->timestamp('unpublished_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
@@ -36,7 +31,6 @@ return new class extends Migration {
     }
 
     public function down() {
-        Schema::dropIfExists('draft_products');
+        Schema::dropIfExists('publish_products');
     }
 };
-// php artisan make:migration create_publishproduct_table
